@@ -1,44 +1,42 @@
 const findLatestWeight = (weights) => {
-  // let current = weights[0];
-  weights.sort((a, b) => a - b); // 1,1,2,4,7,8
+  weights.sort((a, b) => a - b);
 
-  while (weights.length > 1) {
-    console.log({ weights });
-    const weights2 = [];
+  while (weights.length >= 2) {
     const max1 = weights.pop();
     const max2 = weights.pop();
 
     const diff = max1 - max2;
-    console.log({ max1, max2, diff });
-    let isPivotFound = false;
 
-    if (diff !== 0) {
-      for (let index = 0; index < weights.length; index++) {
-        const current = weights[index];
+    if (weights.length === 0) {
+      return diff;
+    }
 
-        if (!isPivotFound && diff <= current) {
-          weights2.push(diff);
-          isPivotFound = true;
-        }
-        weights2.push(current);
+    if (diff === 0) {
+      continue;
+    }
 
-        console.log(weights2);
-        // index -= 1;
+    for (let index = 0; index < weights.length; index++) {
+      if (diff <= weights[index]) {
+        weights.splice(index, 0, diff);
+        break;
       }
-      weights = weights2;
+      if (index === weights.length - 1) {
+        weights.push(diff);
+        break;
+      }
     }
   }
 
   return weights[0] || 0;
 };
-findLatestWeight([2, 7, 4, 1, 8, 1]);
-module.exports = findLatestWeight;
-/*
-[2,7,4,1,8,1]
-8,7,4,2,1,1
 
-[2,4,1,1,1]
-[2,1,1,1]
-[1,1,1]
-[1]
-*/
+// const getRandomIntegerInRange = (min, max) => {
+//   const diff = max - min + 1;
+//   return () => Math.floor(Math.random() * diff) + min;
+// };
+// const rndmInt = getRandomIntegerInRange(1, 100);
+// console.time();
+// findLatestWeight(new Array(1000000).fill(0).map(() => rndmInt()));
+// console.timeEnd();
+
+module.exports = findLatestWeight;
