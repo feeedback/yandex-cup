@@ -1,9 +1,7 @@
 const inputProcessing = require('./index');
 
 const testData = [
-  [['ab', 'aabbccd'], 4],
-  [['ab', 'aaaaaaa'], 7],
-  [['ab', 'ccccddd'], 0],
+  [[2, 7, 4, 1, 8, 1], 1], //
 ];
 
 testData.forEach(([input, output], index) => {

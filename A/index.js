@@ -1,18 +1,26 @@
-const findLatestWeight = (weights, i = weights.length - 1) => {
-  const cur = weights.length - 1 === i;
+const findLatestWeight = (weights) => {
+  // let current = weights[0];
 
-  if (i === 0) return weights[0];
+  while (weights.length > 1) {
+    // current = weights[0];
+    let max1 = -Infinity
+    let max2 = -Infinity
 
-  weights.sort((a, b) => a - b);
-  weights[i - 1] = weights[i] === weights[i - 1] ? 0 : weights[i] - weights[i - 1];
+    for (let index = 0; index < weights.length; index++) {
+      if (max1 > max2) {
+        
+      }
+      if (weights[index] === weights[index - 1]) {
+        weights[index - 1] = 0;
+      } else {
+        weights[index - 1] = weights[index] - weights[index - 1];
+      }
 
-  return findLatestWeight(weights, i - 1);
+      index -= 1;
+    }
+  }
+
+  return weights[0];
 };
-
-// function inputProcessing(lines) {
-//   const [jewels, stones] = lines;
-
-//   return stoneJewelryCalc(jewels, stones);
-// }
 
 module.exports = findLatestWeight;

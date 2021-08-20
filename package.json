@@ -10,7 +10,5 @@
     "testEnvironment": "node",
     "transform": {}
   },
-  "devDependencies": {
-    "jest": "^27.0.6"
-  }
+  "devDependencies": {}
 }
