@@ -38,6 +38,7 @@
     // box.style.backgroundColor = "#ffcece"
     box.style.margin = 'auto';
     box.style.display = 'flex';
+    box.style.filter = 'contrast(1.5) sepia(1)';
     // box.src = 'https://contest.yandex.ru/testsys/statement-image?imageId=f37625061f759da40ce3e02a28ce7f4abab6c9d8cfd88a3614609051e7b153a7'
     box.src = 'https://contest.yandex.ru/testsys/statement-image?imageId=b195b513214a228276aee97746209ea7ee83cf73cec6e258363178582f124214'
     document.body.append(box);
@@ -52,12 +53,12 @@
 
   };
 
-  // const delay = (ms) =>
-  //   new Promise((resolve) => {
-  //     setTimeout(resolve, ms);
-  //   });
+  const delay = (ms) =>
+    new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
 
-  const renderFields = (box, binary) => {
+  const renderFields = async (box, binary) => {
     for (let i = 1; i <= 5; i++) {
       const verticalLine = document.createElement('div');
       verticalLine.classList.add('vertical-line');
@@ -96,7 +97,7 @@
     let index = 0;
     for (let y = 0; y < 12; y++) {
       for (let x = 0; x < 32; x++) {
-        // await delay(1)
+        await delay(1)
         const block = document.createElement('div');
         block.classList.add('block');
         block.style.width = '8px';
@@ -124,31 +125,29 @@
     console.log({ str });
 
     const encoder = new TextEncoder();
-    const bits = encoder.encode(`${str}0`);
-    // const bits = [];
+    const bits = encoder.encode(`${str}${String.fromCharCode(0)}`);
 
+    // const bits = [];
     // for (let i = 0; i < str.length; i++) {
     //   bits[i] = str.charCodeAt(i);
     // }
+    const lastBit = bits.reduce((sum, bit) => sum ^ bit);
 
-    const lastBit = bits.reduce((sum, bit) => (sum ^ bit));
-    // const lastBit = bits.reduce((sum, bit) => sum ^ bit);
 
-    console.log({ lastBit });
     bits[47] = lastBit;
 
-    console.log({ bits });
+
 
     let binary = '';
 
     bits.forEach((bit) => {
       binary += bit.toString(2).padStart(8, '0')
     });
-    console.log({ binary });
+
     return binary;
   };
 
-  function renderBarcode() {
+  async function renderBarcode() {
     // type CoffeeMachineDebugInfo = {
     //   /**
     //    * Идентификатор конкретной кофе-машины — строка из маленьких
@@ -191,7 +190,7 @@
     }
     const binary = decodeMessageToBinary(debugInfo);
     const box = renderBox();
-    renderFields(box, binary);
+    await renderFields(box, binary);
   }
 
   console.log(renderBarcode());
