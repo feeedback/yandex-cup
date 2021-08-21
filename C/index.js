@@ -1,120 +1,71 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-bitwise */
+const renderFn = {
+  createLineEl: (index) => {
+    const verticalLineEl = document.createElement('div');
 
-console.time('paint');
+    verticalLineEl.style.width = index % 2 === 0 ? '5px' : '4px';
+    verticalLineEl.style.height = '96px';
+    verticalLineEl.style.backgroundColor = index % 2 === 0 ? 'white' : 'black';
 
-const renderBox = () => {
-  const box = document.createElement('div');
-  box.classList.add('box');
-  box.style.width = '300px';
-  box.style.height = '96px';
-  // box.style.backgroundColor = "#ffcece"
-  box.style.margin = 'auto';
-  box.style.display = 'flex';
-  document.body.append(box);
+    return verticalLineEl;
+  },
 
-  return box;
-};
-const renderBox2 = () => {
-  const box = document.createElement('img');
-  box.classList.add('box');
-  box.style.width = '300px';
-  box.style.height = '96px';
-  // box.style.backgroundColor = "#ffcece"
-  box.style.margin = 'auto';
-  box.style.display = 'flex';
-  // box.src = 'https://contest.yandex.ru/testsys/statement-image?imageId=f37625061f759da40ce3e02a28ce7f4abab6c9d8cfd88a3614609051e7b153a7'
-  box.src =
-    'https://contest.yandex.ru/testsys/statement-image?imageId=b195b513214a228276aee97746209ea7ee83cf73cec6e258363178582f124214';
-  document.body.append(box);
+  createFieldEl: () => {
+    const widthField = 300 - (4 * 3 + 5 * 2) * 2;
+    const fieldEl = document.createElement('div');
 
-  const line = document.createElement('div');
-  line.style.width = '304px';
-  line.style.height = '2px';
-  line.style.backgroundColor = 'red';
-  line.style.margin = 'auto';
-  // box.style.display = 'flex';
-  document.body.append(line);
+    fieldEl.style.width = `${widthField}px`;
+    fieldEl.style.height = '96px';
+    fieldEl.style.display = 'flex';
+    fieldEl.style.flexWrap = 'wrap';
+    fieldEl.style.alignContent = 'flex-start';
+
+    return fieldEl;
+  },
+
+  createCellEl: (binaryValue) => {
+    const cellEl = document.createElement('div');
+
+    cellEl.style.width = '8px';
+    cellEl.style.height = '8px';
+    cellEl.style.backgroundColor = Number(binaryValue) === 1 ? 'black' : 'white';
+
+    return cellEl;
+  },
 };
 
-// const delay = (ms) =>
-//   new Promise((resolve) => {
-//     setTimeout(resolve, ms);
-//   });
+const renderBarcodeEl = (parentElement, binary) => {
+  parentElement.style.display = 'flex';
 
-const renderFields = (box, binary) => {
-  for (let i = 1; i <= 5; i++) {
-    const verticalLine = document.createElement('div');
-    verticalLine.classList.add('vertical-line');
-    verticalLine.style.width = i % 2 === 0 ? '5px' : '4px';
-    verticalLine.style.height = '96px';
-    verticalLine.style.backgroundColor = i % 2 === 0 ? 'white' : 'black';
-    box.append(verticalLine);
+  for (let index = 1; index <= 5; index++) {
+    parentElement.append(renderFn.createLineEl(index));
   }
 
-  //  С левого и правого края баркод ограничен пятью полосками
-  //  (чёрная, белая, чёрная, белая, чёрная).
-  //  Ширина чёрной полоски — 4 пикселя, белой полоски - 5 пикселей.
-  const widthField = 300 - (4 * 3 + 5 * 2) * 2;
-  const field = document.createElement('div');
-  field.classList.add('field');
-  field.style.width = `${widthField}px`;
-  field.style.height = '96px';
-  // field.style.backgroundColor = 'green'
-  // field.style.margin = 'auto';
-  // field.style.display = 'grid';
-  // field.style.gridTemplate = 'repeat(12, 8px) / repeat(32, 8px)';
-  field.style.display = 'flex';
-  field.style.flexWrap = 'wrap';
-  field.style.alignContent = 'flex-start';
-  box.append(field);
+  const fieldEl = renderFn.createFieldEl();
+  parentElement.append(fieldEl);
 
-  for (let i = 1; i <= 5; i++) {
-    const verticalLine = document.createElement('div');
-    verticalLine.classList.add('vertical-line');
-    verticalLine.style.width = i % 2 === 0 ? '5px' : '4px';
-    verticalLine.style.height = '96px';
-    verticalLine.style.backgroundColor = i % 2 === 0 ? 'white' : 'black';
-    box.append(verticalLine);
+  for (let index = 1; index <= 5; index++) {
+    parentElement.append(renderFn.createLineEl(index));
   }
 
-  let index = 0;
-  for (let y = 0; y < 12; y++) {
-    for (let x = 0; x < 32; x++) {
-      // await delay(1)
-      const block = document.createElement('div');
-      block.classList.add('block');
-      block.style.width = '8px';
-      block.style.height = '8px';
-      block.style.backgroundColor = Number(binary[index]) === 1 ? 'black' : 'white';
-      field.append(block);
-      index += 1;
-    }
+  for (let index = 0; index < 12 * 32; index++) {
+    fieldEl.append(renderFn.createCellEl(binary[index]));
   }
 };
-/**
- * Отрисовать отладочную информацию кофемашины в element
- * @param debugInfo {CoffeeMachineDebugInfo} - отладочная информация
- * @param element {HTMLDivElement} - div с фиксированным размером 300x96 пикселей, в который будет отрисовываться баркод
- */
 
-// async function renderBarcode(debugInfo, element) {
 const decodeMessageToBinary = (debugInfo) => {
-  console.log(debugInfo);
-
   const code = debugInfo.code.toString().padStart(3, '0');
   const message = debugInfo.message.padEnd(34, ' ');
 
   const str = `${debugInfo.id}${code}${message}`;
-  console.log({ str });
 
   const encoder = new TextEncoder();
-  const bits = encoder.encode(`${str}0`);
+  const bits = encoder.encode(`${str}${String.fromCharCode(0)}`);
 
   const lastBit = bits.reduce((sum, bit) => sum ^ bit);
 
   bits[47] = lastBit;
-
-  console.log({ bits });
 
   let binary = '';
 
@@ -122,25 +73,17 @@ const decodeMessageToBinary = (debugInfo) => {
     binary += bit.toString(2).padStart(8, '0');
   });
 
-  console.log({ binary });
   return binary;
 };
 
-function renderBarcode() {
-  renderBox2();
-  // const debugInfo = {
-  //   id: 'ezeb2fve0b',
-  //   code: 10,
-  //   message: '404 Error coffee not found',
-  // };
-  const debugInfo = {
-    id: 'Teapot1234',
-    code: 0,
-    message: 'No coffee this is a teapot',
-  };
+/**
+ * Отрисовать отладочную информацию кофемашины в element
+ * @param debugInfo {CoffeeMachineDebugInfo} - отладочная информация
+ * @param element {HTMLDivElement} - div с фиксированным размером 300x96 пикселей, в который будет отрисовываться баркод
+ */
+// eslint-disable-next-line no-unused-vars
+function renderBarcode(debugInfo, parentElement) {
   const binary = decodeMessageToBinary(debugInfo);
-  const box = renderBox();
-  renderFields(box, binary);
-}
 
-console.log(renderBarcode());
+  renderBarcodeEl(parentElement, binary);
+}
