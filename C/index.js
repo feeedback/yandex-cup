@@ -83,11 +83,18 @@ const decodeMessageToBinary = (debugInfo) => {
   const str = `${id}${String(code).padStart(3, '0')}${message.padEnd(34, ' ')}`;
   console.log({ str });
 
-  const encoder = new TextEncoder();
-  // const view = encoder.encode(str.repeat(1000));
-  const bits = encoder.encode(`${str}0`);
+  // const encoder = new TextEncoder();
+  // // const view = encoder.encode(str.repeat(1000));
+  // const bits = encoder.encode(`${str}0`);
+  const bits = new Array(48);
 
-  const lastBit = bits.reduce((sum, bit, i) => (i === 47 ? sum : sum ^ bit));
+  for (let i = 0; i < 47; i++) {
+    bits[i] = str.charCodeAt(i);
+  }
+
+  // const lastBit = bits.reduce((sum, bit, i) => (i === 47 ? sum : sum ^ bit));
+  const lastBit = bits.reduce((sum, bit) => sum ^ bit);
+
   console.log({ lastBit });
   bits[47] = lastBit;
 
@@ -98,7 +105,7 @@ const decodeMessageToBinary = (debugInfo) => {
   bits.forEach((bit) => {
     binary += bit.toString(2);
   });
-
+  console.log({ binary });
   return binary;
 };
 
