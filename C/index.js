@@ -1,4 +1,5 @@
 /* eslint-disable no-bitwise */
+
 console.time('paint');
 
 const renderBox = () => {
@@ -12,6 +13,27 @@ const renderBox = () => {
   document.body.append(box);
 
   return box;
+};
+const renderBox2 = () => {
+  const box = document.createElement('img');
+  box.classList.add('box');
+  box.style.width = '300px';
+  box.style.height = '96px';
+  // box.style.backgroundColor = "#ffcece"
+  box.style.margin = 'auto';
+  box.style.display = 'flex';
+  // box.src = 'https://contest.yandex.ru/testsys/statement-image?imageId=f37625061f759da40ce3e02a28ce7f4abab6c9d8cfd88a3614609051e7b153a7'
+  box.src =
+    'https://contest.yandex.ru/testsys/statement-image?imageId=b195b513214a228276aee97746209ea7ee83cf73cec6e258363178582f124214';
+  document.body.append(box);
+
+  const line = document.createElement('div');
+  line.style.width = '304px';
+  line.style.height = '2px';
+  line.style.backgroundColor = 'red';
+  line.style.margin = 'auto';
+  // box.style.display = 'flex';
+  document.body.append(line);
 };
 
 // const delay = (ms) =>
@@ -63,7 +85,7 @@ const renderFields = (box, binary) => {
       block.classList.add('block');
       block.style.width = '8px';
       block.style.height = '8px';
-      block.style.backgroundColor = binary[index] ? 'white' : 'black';
+      block.style.backgroundColor = Number(binary[index]) === 1 ? 'black' : 'white';
       field.append(block);
       index += 1;
     }
@@ -78,24 +100,18 @@ const renderFields = (box, binary) => {
 // async function renderBarcode(debugInfo, element) {
 const decodeMessageToBinary = (debugInfo) => {
   console.log(debugInfo);
-  const { id, code, message } = debugInfo;
 
-  const str = `${id}${String(code).padStart(3, '0')}${message.padEnd(34, ' ')}`;
+  const code = debugInfo.code.toString().padStart(3, '0');
+  const message = debugInfo.message.padEnd(34, ' ');
+
+  const str = `${debugInfo.id}${code}${message}`;
   console.log({ str });
 
-  // const encoder = new TextEncoder();
-  // // const view = encoder.encode(str.repeat(1000));
-  // const bits = encoder.encode(`${str}0`);
-  const bits = new Array(48);
+  const encoder = new TextEncoder();
+  const bits = encoder.encode(`${str}0`);
 
-  for (let i = 0; i < 47; i++) {
-    bits[i] = str.charCodeAt(i);
-  }
-
-  // const lastBit = bits.reduce((sum, bit, i) => (i === 47 ? sum : sum ^ bit));
   const lastBit = bits.reduce((sum, bit) => sum ^ bit);
 
-  console.log({ lastBit });
   bits[47] = lastBit;
 
   console.log({ bits });
@@ -103,47 +119,24 @@ const decodeMessageToBinary = (debugInfo) => {
   let binary = '';
 
   bits.forEach((bit) => {
-    binary += bit.toString(2);
+    binary += bit.toString(2).padStart(8, '0');
   });
+
   console.log({ binary });
   return binary;
 };
 
 function renderBarcode() {
-  // type CoffeeMachineDebugInfo = {
-  //   /**
-  //    * Идентификатор конкретной кофе-машины — строка из маленьких
-  //    * и больших латинских букв и цифр, строго 10 символов
-  //    */
-  //   id: string;
-  //   /**
-  //    * Код ошибки — целое число от 0 до 999
-  //    */
-  //   code: number;
-  //   /**
-  //    * Сообщение об ошибке — строка из маленьких и больших
-  //    * латинских букв, цифр и пробелов (от 0 до 34 символов)
-  //    */
-  //   message: string;
-  // }
-
-  // Алгоритм формирования контента баркода
-
-  // Из отладочной информации формируется строка вида <id><code><message>. Поле code дополняется
-  // незначащими нулями до трех символов. Поле message дополняется пробелами в конце до 34 символов.
-
-  // Далее строка конвертируется в байтовый массив - каждому символу строки ставится в соответствие
-  // его ASCII-код (число от 0 до 255). В конец массива дописывается один байт контрольной суммы,
-  // которая вычисляется как побитовое сложение по модулю 2 (XOR) всех элементов массива.
-
-  // Затем, каждый элемент полученного массива переводится в двоичную запись (восемь символов 0 или
-  // 1) и кодируется последовательностью из восьми квадратов (0 - белый квадрат, 1 - черный
-  // квадрат). Квадраты отрисовываются в контенте баркода последовательно и построчно.
-
+  renderBox2();
+  // const debugInfo = {
+  //   id: 'ezeb2fve0b',
+  //   code: 10,
+  //   message: '404 Error coffee not found',
+  // };
   const debugInfo = {
-    id: 'ezeb2fve0b',
-    code: 10,
-    message: '404 Error coffee not found',
+    id: 'Teapot1234',
+    code: 0,
+    message: 'No coffee this is a teapot',
   };
   const binary = decodeMessageToBinary(debugInfo);
   const box = renderBox();
@@ -151,7 +144,3 @@ function renderBarcode() {
 }
 
 console.log(renderBarcode());
-
-document.addEventListener('DOMContentLoaded', () => {
-  console.timeEnd('paint');
-});
