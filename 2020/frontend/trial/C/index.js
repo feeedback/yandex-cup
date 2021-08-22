@@ -35,7 +35,7 @@ const renderFn = {
   },
 };
 
-const renderBarcodeEl = (parentElement, binary) => {
+const renderBarcodeEl = (parentElement, binary, isAsyncRender = false) => {
   parentElement.style.display = 'flex';
 
   for (let index = 1; index <= 5; index++) {
@@ -50,7 +50,13 @@ const renderBarcodeEl = (parentElement, binary) => {
   }
 
   for (let index = 0; index < 12 * 32; index++) {
-    fieldEl.append(renderFn.createCellEl(binary[index]));
+    if (isAsyncRender) {
+      setTimeout(() => {
+        fieldEl.append(renderFn.createCellEl(binary[index]));
+      }, index * 4);
+    } else {
+      fieldEl.append(renderFn.createCellEl(binary[index]));
+    }
   }
 };
 
@@ -82,8 +88,8 @@ const decodeMessageToBinary = (debugInfo) => {
  * @param element {HTMLDivElement} - div с фиксированным размером 300x96 пикселей, в который будет отрисовываться баркод
  */
 // eslint-disable-next-line no-unused-vars
-function renderBarcode(debugInfo, parentElement) {
+function renderBarcode(debugInfo, parentElement, isAsyncRender) {
   const binary = decodeMessageToBinary(debugInfo);
 
-  renderBarcodeEl(parentElement, binary);
+  renderBarcodeEl(parentElement, binary, isAsyncRender);
 }

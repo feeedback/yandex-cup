@@ -7,44 +7,47 @@
     <title>Document</title>
   </head>
 
-  <body></body>
+  <body style="display: flex; gap: 40px"></body>
 </html>
+<script src="./index.js"></script>
 <script>
   console.time('paint');
 
-  const renderBox = () => {
+  const renderBoxForImg = (parentElement) => {
     const box = document.createElement('div');
-    // box.classList.add('box');
-    box.style.width = '300px';
-    box.style.height = '96px';
-    // box.style.backgroundColor = "#ffcece"
-    // box.style.margin = 'auto';
-    box.style.display = 'flex';
-    document.body.append(box);
+    parentElement.append(box);
 
     return box;
   };
-  const renderImageBarcodeExpect = () => {
-    const box = document.createElement('img');
-    box.classList.add('box');
+  const renderBox = (parentElement) => {
+    const box = document.createElement('div');
     box.style.width = '300px';
     box.style.height = '96px';
-    // box.style.backgroundColor = "#ffcece"
-    // box.style.margin = 'auto';
     box.style.display = 'flex';
-    box.style.filter = 'contrast(1.5) sepia(1)';
-    // box.src = 'https://contest.yandex.ru/testsys/statement-image?imageId=f37625061f759da40ce3e02a28ce7f4abab6c9d8cfd88a3614609051e7b153a7'
-    box.src =
-      'https://contest.yandex.ru/testsys/statement-image?imageId=b195b513214a228276aee97746209ea7ee83cf73cec6e258363178582f124214';
-    document.body.append(box);
+    box.style.marginBottom = '20px';
+
+    parentElement.append(box);
+
+    return box;
+  };
+
+  const renderImageBarcodeExpect = (parentElement, src) => {
+    const box = document.createElement('img');
+
+    box.style.width = '300px';
+    box.style.height = '96px';
+    box.style.display = 'flex';
+    box.style.filter = 'contrast(1.5) sepia(3)';
+    box.src = src;
+
+    parentElement.append(box);
 
     const line = document.createElement('div');
     line.style.width = '300px';
     line.style.height = '3px';
     line.style.backgroundColor = 'red';
-    // line.style.margin = 'auto';
-    // box.style.display = 'flex';
-    document.body.append(line);
+
+    parentElement.append(line);
   };
 
   const delay = (ms) =>
@@ -52,108 +55,37 @@
       setTimeout(resolve, ms);
     });
 
-  /* eslint-disable no-bitwise */
-  const renderFn = {
-    createLineEl: (index) => {
-      const verticalLineEl = document.createElement('div');
-
-      verticalLineEl.style.width = index % 2 === 0 ? '5px' : '4px';
-      verticalLineEl.style.height = '96px';
-      verticalLineEl.style.backgroundColor = index % 2 === 0 ? 'white' : 'black';
-
-      return verticalLineEl;
-    },
-
-    createFieldEl: () => {
-      const widthField = 300 - (4 * 3 + 5 * 2) * 2;
-      const fieldEl = document.createElement('div');
-
-      fieldEl.style.width = `${widthField}px`;
-      fieldEl.style.height = '96px';
-      fieldEl.style.display = 'flex';
-      fieldEl.style.flexWrap = 'wrap';
-      fieldEl.style.alignContent = 'flex-start';
-
-      return fieldEl;
-    },
-
-    createCellEl: (binaryValue) => {
-      const cellEl = document.createElement('div');
-
-      cellEl.style.width = '8px';
-      cellEl.style.height = '8px';
-      cellEl.style.backgroundColor = Number(binaryValue) === 1 ? 'black' : 'white';
-
-      return cellEl;
-    },
-  };
-
-  const renderBarcodeEl = async (parentElement, binary) => {
-    parentElement.style.display = 'flex';
-
-    for (let index = 1; index <= 5; index++) {
-      parentElement.append(renderFn.createLineEl(index));
-    }
-
-    const fieldEl = renderFn.createFieldEl();
-    parentElement.append(fieldEl);
-
-    for (let index = 1; index <= 5; index++) {
-      parentElement.append(renderFn.createLineEl(index));
-    }
-
-    for (let index = 0; index < 12 * 32; index++) {
-      await delay(0);
-      fieldEl.append(renderFn.createCellEl(binary[index]));
-    }
-  };
-
-  const decodeMessageToBinary = (debugInfo) => {
-    const code = debugInfo.code.toString().padStart(3, '0');
-    const message = debugInfo.message.padEnd(34, ' ');
-
-    const str = `${debugInfo.id}${code}${message}`;
-
-    const encoder = new TextEncoder();
-    const bits = encoder.encode(`${str}${String.fromCharCode(0)}`);
-
-    const lastBit = bits.reduce((sum, bit) => sum ^ bit);
-
-    bits[47] = lastBit;
-
-    let binary = '';
-
-    bits.forEach((bit) => {
-      binary += bit.toString(2).padStart(8, '0');
-    });
-
-    return binary;
-  };
-
-  /**
-   * Отрисовать отладочную информацию кофемашины в element
-   * @param debugInfo {CoffeeMachineDebugInfo} - отладочная информация
-   * @param element {HTMLDivElement} - div с фиксированным размером 300x96 пикселей, в который будет отрисовываться баркод
-   */
-  function renderBarcode(debugInfo, parentElement) {
-    const binary = decodeMessageToBinary(debugInfo);
-
-    renderBarcodeEl(parentElement, binary);
-  }
-
-  const main = (params) => {
-    renderImageBarcodeExpect();
-    const parentElement = renderBox();
+  const runDraw = (params) => {
+    const barcode1 = renderBoxForImg(document.body);
+    renderImageBarcodeExpect(
+      barcode1,
+      'https://contest.yandex.ru/testsys/statement-image?imageId=b195b513214a228276aee97746209ea7ee83cf73cec6e258363178582f124214'
+    );
+    const box = renderBox(barcode1);
 
     const testDebugInfo = {
       id: 'Teapot1234',
       code: 0,
       message: 'No coffee this is a teapot',
     };
-    renderBarcode(testDebugInfo, parentElement);
+    renderBarcode(testDebugInfo, box, true);
+
+    const barcode2 = renderBoxForImg(document.body);
+    renderImageBarcodeExpect(
+      barcode2,
+      'https://contest.yandex.ru/testsys/statement-image?imageId=f37625061f759da40ce3e02a28ce7f4abab6c9d8cfd88a3614609051e7b153a7'
+    );
+    const box2 = renderBox(barcode2);
+
+    const testDebugInfo2 = {
+      id: 'ezeb2fve0b',
+      code: 10,
+      message: '404 Error coffee not found',
+    };
+    renderBarcode(testDebugInfo2, box2, true);
   };
 
-  main();
+  runDraw();
 
   document.addEventListener('DOMContentLoaded', () => {
     console.timeEnd('paint');
