@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "jest --passWithNoTests --verbose  --silent=false"
+    "test": "jest --passWithNoTests --verbose  --silent=false",
+    "prepare": "husky install"
   },
   "author": "Alexander Rzhanitsyn",
   "jest": {
@@ -18,15 +19,10 @@
     "lint-staged": "^11.1.2",
     "prettier": "^2.3.2"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
-    "*.{js,jsx},!package-lock.json": [
+    "*.{js,jsx}": [
       "prettier --write",
-      "eslint --fix",
+      "eslint --cache --fix",
       "git add"
     ],
     "*.{html,css,less,ejs,md}": [
