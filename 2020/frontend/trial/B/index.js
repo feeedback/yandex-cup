@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 const parseSeparatorClassBEM = (classStr) => {
   let mod = null;
   let elem = null;
@@ -35,4 +36,16 @@ const parseSeparatorClassBEM = (classStr) => {
   return { mod, elem };
 };
 
-module.exports = parseSeparatorClassBEM;
+const parseSeparatorClassBEMRegexp = (classStr) => {
+  const regexpPattern = /[a-z]+(([^a-z]+)[a-z]+)(?:(?:\2)[a-z]+)*(?:([^a-z]+)[a-z]+)((?:(?:\2)?|(?:\3)?)+)/;
+
+  const [, , mod, elem, manyTimes] = classStr.match(regexpPattern);
+
+  if (manyTimes === elem) {
+    return { mod: elem, elem: mod };
+  }
+
+  return { mod, elem };
+};
+
+module.exports = parseSeparatorClassBEMRegexp;
