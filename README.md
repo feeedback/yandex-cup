@@ -1,17 +1,20 @@
-## Яндекс.Контест. Подготовка к собеседованию
+### Пробный раунд Yandex Cup 2020. Frontend
+[Yandex Cup]((https://yandex.ru/cup/frontend/)) / 2020 / Frontend / Trial
 
 Мои решения задач [из раздела Frontend - пробного раунда Yandex Cup 2020](https://contest.yandex.ru/contest/19380), на языке JavaScript.
+[*Есть разбор задач от авторов*](https://yandex.ru/cup/frontend/analysis/) *на сайте яндекса*
 
-- [A. Камни и украшения](https://github.com/feeedback/yandex-interview-contest/tree/main/A)
-- [B. Последовательно идущие единицы](https://github.com/feeedback/yandex-interview-contest/tree/main/B)
-- [C. Удаление дубликатов](https://github.com/feeedback/yandex-interview-contest/tree/main/C)
-- [D. Генерация скобочных последовательностей](https://github.com/feeedback/yandex-interview-contest/tree/main/D)
-- [E. Анаграммы](https://github.com/feeedback/yandex-interview-contest/tree/main/E)
-- [G. Интересное путешествие](https://github.com/feeedback/yandex-interview-contest/tree/main/G)
+- [A. Аннигилируй это](https://github.com/feeedback/yandex-cup-contest/tree/main/2020/frontend/trial/A) _(15 баллов)_
+- [B. БЭМ](https://github.com/feeedback/yandex-cup-contest/tree/main/2020/frontend/trial/B) _(15 баллов)_
+- [C. Отладка кофемашины](https://github.com/feeedback/yandex-cup-contest/tree/main/2020/frontend/trial/C) _(40 баллов)_
+- [D. Автоматизируй это](https://github.com/feeedback/yandex-cup-contest/tree/main/2020/frontend/trial/D) _(40 баллов)_
+- [E. Восстание роботов](https://github.com/feeedback/yandex-cup-contest/tree/main/2020/frontend/trial/E) _(50 баллов)_
+- [F. Педро бросает пить](https://github.com/feeedback/yandex-cup-contest/tree/main/2020/frontend/trial/F) _(60 баллов)_
 
 **Для запуска тестов**: `npm test`
 
 **Как отправляю решение в Я.Контест:**
 
-- Если решение без вывода понемногу в функции логики, то копирую содержимое файла [`contest-io-template.js`](https://github.com/feeedback/yandex-interview-contest/tree/main/contest-io-template.js)
+- Если вывод требуется в индивидуальном формате, то копирую содержимое файла `index.js` или нужной функции
+- Если решение без вывода понемногу в функции логики, то копирую содержимое файла [`contest-io-template.js`](https://github.com/feeedback/yandex-cup-contest/tree/main/2020/frontend/trial/contest-io-template.js)
 - Копирую и вставляю ниже функцию с получения решения `inputProcessing` из `[папки]/index.js` (_если оно обернуто в функцию для работоспособности тестов, то убираю лишнее_)
