@@ -1,8 +1,9 @@
 ### Пробный раунд Yandex Cup 2020. Frontend
-[Yandex Cup]((https://yandex.ru/cup/frontend/)) / 2020 / Frontend / Trial
+
+[Yandex Cup](https://yandex.ru/cup/frontend/) / 2020 / Frontend / Trial
 
 Мои решения задач [из раздела Frontend - пробного раунда Yandex Cup 2020](https://contest.yandex.ru/contest/19380), на языке JavaScript.
-[*Есть разбор задач от авторов*](https://yandex.ru/cup/frontend/analysis/) *на сайте яндекса*
+[_Есть разбор задач от авторов_](https://yandex.ru/cup/frontend/analysis/) _на сайте яндекса_
 
 - [A. Аннигилируй это](https://github.com/feeedback/yandex-cup-contest/tree/main/2020/frontend/trial/A) _(15 баллов)_
 - [B. БЭМ](https://github.com/feeedback/yandex-cup-contest/tree/main/2020/frontend/trial/B) _(15 баллов)_
