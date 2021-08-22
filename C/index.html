@@ -1,20 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-
-<body>
-
-</body>
-
+  <body></body>
 </html>
 <script>
-
   console.time('paint');
 
   const renderBox = () => {
@@ -30,7 +25,6 @@
     return box;
   };
   const renderImageBarcodeExpect = () => {
-
     const box = document.createElement('img');
     box.classList.add('box');
     box.style.width = '300px';
@@ -40,24 +34,23 @@
     box.style.display = 'flex';
     box.style.filter = 'contrast(1.5) sepia(1)';
     // box.src = 'https://contest.yandex.ru/testsys/statement-image?imageId=f37625061f759da40ce3e02a28ce7f4abab6c9d8cfd88a3614609051e7b153a7'
-    box.src = 'https://contest.yandex.ru/testsys/statement-image?imageId=b195b513214a228276aee97746209ea7ee83cf73cec6e258363178582f124214'
+    box.src =
+      'https://contest.yandex.ru/testsys/statement-image?imageId=b195b513214a228276aee97746209ea7ee83cf73cec6e258363178582f124214';
     document.body.append(box);
 
     const line = document.createElement('div');
     line.style.width = '300px';
     line.style.height = '3px';
-    line.style.backgroundColor = "red"
+    line.style.backgroundColor = 'red';
     // line.style.margin = 'auto';
     // box.style.display = 'flex';
     document.body.append(line);
-
   };
 
   const delay = (ms) =>
     new Promise((resolve) => {
       setTimeout(resolve, ms);
     });
-
 
   /* eslint-disable no-bitwise */
   const renderFn = {
@@ -110,7 +103,7 @@
     }
 
     for (let index = 0; index < 12 * 32; index++) {
-      await delay(0)
+      await delay(0);
       fieldEl.append(renderFn.createCellEl(binary[index]));
     }
   };
@@ -149,21 +142,20 @@
   }
 
   const main = (params) => {
-    renderImageBarcodeExpect()
-    const box = renderBox();
+    renderImageBarcodeExpect();
+    const parentElement = renderBox();
 
-    const debugInfo = {
-      "id": "Teapot1234",
-      "code": 0,
-      "message": "No coffee this is a teapot"
-    }
-    renderBarcode(debugInfo, box);
-  }
+    const testDebugInfo = {
+      id: 'Teapot1234',
+      code: 0,
+      message: 'No coffee this is a teapot',
+    };
+    renderBarcode(testDebugInfo, parentElement);
+  };
 
-  main()
+  main();
 
   document.addEventListener('DOMContentLoaded', () => {
     console.timeEnd('paint');
   });
-
 </script>
