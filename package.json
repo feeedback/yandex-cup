@@ -4,6 +4,8 @@
   "description": "",
   "scripts": {
     "test": "jest --passWithNoTests --verbose  --silent=false",
+    "lint": "eslint --fix .",
+    "prettier": "prettier --write .",
     "prepare": "husky install"
   },
   "author": "Alexander Rzhanitsyn",
