@@ -1,4 +1,4 @@
-const inputProcessing = require('./index');
+const inputProcessing = require('./index.js');
 
 const testData = [
   [[2, 7, 4, 1, 8, 1], 1], // №1

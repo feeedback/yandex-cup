@@ -1,4 +1,4 @@
-const inputProcessing = require('./index');
+const inputProcessing = require('./index.js');
 
 const testData = [
   ['block_mod__elem', { mod: '_', elem: '__' }],
