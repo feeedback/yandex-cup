@@ -26,7 +26,7 @@ module.exports = {
     'max-len': [
       1,
       {
-        code: 110,
+        code: 100,
         ignoreUrls: true,
         ignoreStrings: true,
         ignoreTemplateLiterals: true,
