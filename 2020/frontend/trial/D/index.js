@@ -1,11 +1,4 @@
-//  regexp ???
-// \<colgroup\>(\s*<col(?: align="([a-z]+)")? \/>\s*)+
-
-// const jsdom = require('../../../../node_modules/jsdom/lib/api.js');
-
-// const getDOMDocument = (data = '') => new jsdom.JSDOM(data).window.document;
-// const document = getDOMDocument();
-
+/* eslint-disable default-case */
 const clearWhiteSpaces = (str) => str
   .replace(/\r?\n|\r/g, '')
   .replace(/\s+/g, ' ')
@@ -23,18 +16,6 @@ const processCell = (cell) => {
 
 const processTr = (tr) => Array(...tr.children).map(processCell);
 
-const getProcessors = (alignments, rows, defaultAlign) => ({
-  colgroup: (colgroup) => {
-    alignments.push(...Array(...colgroup.children).map((col) => col.align || defaultAlign));
-  },
-  thead: (thead) => {
-    rows.push(...Array(...thead.children).map(processTr));
-  },
-  tbody: (tbody) => {
-    rows.push(...Array(...tbody.children).map(processTr));
-  },
-});
-
 const convertHTMLtoMarkdown = (htmlCode) => {
   const div = document.createElement('div');
   div.innerHTML = htmlCode;
@@ -49,10 +30,23 @@ const convertHTMLtoMarkdown = (htmlCode) => {
 
   const rows = [];
   const alignments = [];
-  const mapTagNameToProcessors = getProcessors(alignments, rows, defaultAlign);
 
   for (const child of table.children) {
-    mapTagNameToProcessors[child.tagName.toLowerCase()](child);
+    const childrenEl = Array(...child.children);
+
+    switch (child.tagName.toLowerCase()) {
+      case 'colgroup':
+        alignments.push(...childrenEl.map((col) => col.align || defaultAlign));
+        break;
+
+      case 'thead':
+        rows.push(...childrenEl.map(processTr));
+        break;
+
+      case 'tbody':
+        rows.push(...childrenEl.map(processTr));
+        break;
+    }
   }
 
   if (alignments.length === 0) {
