@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "jest --passWithNoTests --verbose  --silent=false",
+    "test": "jest --passWithNoTests --verbose --silent=false",
     "lint": "eslint --fix .",
     "prettier": "prettier --write .",
     "prepare": "husky install"
